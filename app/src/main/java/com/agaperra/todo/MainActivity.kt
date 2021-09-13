@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToDoTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    Column() {
+                    Column {
                         Row() {
                             Greeting("monster")
                         }
@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
                             Greeting("Android")
                             Greeting("AGAPERRA")
                         }
+                        MyComposable()
                     }
 
 
