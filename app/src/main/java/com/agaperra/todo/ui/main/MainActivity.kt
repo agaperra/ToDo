@@ -1,4 +1,4 @@
-package com.agaperra.todo
+package com.agaperra.todo.ui.main
 
 import android.os.Bundle
 import android.util.Log
