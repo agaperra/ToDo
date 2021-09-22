@@ -1,13 +1,18 @@
 package com.agaperra.todo
 
-import android.inputmethodservice.Keyboard
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.agaperra.todo.ui.theme.ToDoTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,19 +20,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ToDoTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    Column {
-                        Row() {
-                            Greeting("monster")
-                        }
-                        Row() {
-                            Greeting("Android")
-                            Greeting("AGAPERRA")
-                        }
-                        MyComposable()
-                    }
+                DefaultPreview()
+            }
+        }
+    }
+}
+
+@Composable
+fun NewStory(string: String){
+    Text(text = string)
+}
 
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    ToDoTheme {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(2.dp),
+            color = MaterialTheme.colors.background
+        ) {
+            Column() {
+                Surface(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(5.dp),
+                    color = MaterialTheme.colors.primary
+                ) {
+                    NewStory(string = "Это новая история о том,")
+                }
+                Surface(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(15.dp),
+                    color = MaterialTheme.colors.primaryVariant
+                ) {
+                    NewStory(string = "что нужно использовать")
+                }
+                Surface(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(25.dp),
+                    color = MaterialTheme.colors.secondary
+                ) {
+                    NewStory(string = "столбцы и строки в вашем макете")
                 }
             }
         }
