@@ -16,14 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.agaperra.todo.ui.data.DataProvider
-import com.agaperra.todo.ui.data.model.Note
+import com.agaperra.todo.data.DataProvider
+import com.agaperra.todo.data.model.Note
 
 @Composable
 fun NoteListItem(note: Note) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .padding(horizontal = 4.dp, vertical = 8.dp)
             .fillMaxWidth(),
         elevation = 2.dp,
         backgroundColor = MaterialTheme.colors.secondary,

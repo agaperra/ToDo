@@ -2,15 +2,14 @@
     <!-- Base application theme. -->
     <style name="Theme.ToDo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purpleMainLight</item>
-        <item name="colorPrimaryVariant">@color/purpleMainLight</item>
-        <item name="colorOnPrimary">@color/purpleMainLight</item>
+        <item name="colorPrimary">@color/pastelDeepDirtyRed</item>
+        <item name="colorPrimaryVariant">@color/pastelDeepDirtyRed</item>
+        <item name="colorOnPrimary">@color/pastelDeepDirtyRed</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purpleMainLight</item>
-        <item name="colorSecondaryVariant">@color/purpleMainLight</item>
-        <item name="colorOnSecondary">@color/purpleMainLight</item>
-        <item name="android:windowBackground">@color/purpleMainLight</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="colorSecondary">@color/pastelDeepDirtyRed</item>
+        <item name="colorSecondaryVariant">@color/pastelDeepDirtyRed</item>
+        <item name="colorOnSecondary">@color/pastelDeepDirtyRed</item>
+        <item name="android:windowBackground">@color/pastelDeepDirtyRed</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
 

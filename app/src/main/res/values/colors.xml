@@ -6,4 +6,23 @@
     <color name="highTeal">#FF76AFAC</color>
     <color name="purpleMainLight">#CBB4FF</color>
     <color name="purpleMainDark">#100A1B</color>
+    <color name="purpleLight">#8C7CB1</color>
+    <color name="appBarPurpleLight">#746692</color>
+    <color name="purpleDark">#180D2E</color>
+    <color name="appBarPurpleDark">#241344</color>
+    <color name="iconsPurpleDark">#5B347E</color>
+
+    <color name="pastelWhite">#F1F5F8</color>
+    <color name="pastelLightPurple">#B0B0CD</color>
+    <color name="pastelDeepPurple">#50495B</color>
+    <color name="pastelDeepDirtyRed">#947D8A</color>
+    <color name="pastelDirtyPink">#D5BFD1</color>
+    <color name="pastelCanary">#EEE8D8</color>
+
+    <color name="cinnamonWhite">#E3E6E8</color>
+    <color name="cinnamonEgg">#E5D5CC</color>
+    <color name="cinnamonRed">#A95866</color>
+    <color name="cinnamonWine">#602F42</color>
+    <color name="cinnamonPlum">#2C2839</color>
+    <color name="cinnamonBrown">#7C5B59</color>
 </resources>

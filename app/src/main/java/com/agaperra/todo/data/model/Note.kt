@@ -1,4 +1,4 @@
-package com.agaperra.todo.ui.data.model
+package com.agaperra.todo.data.model
 
 data class Note(
     var id: Int,

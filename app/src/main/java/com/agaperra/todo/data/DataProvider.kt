@@ -1,7 +1,7 @@
-package com.agaperra.todo.ui.data
+package com.agaperra.todo.data
 
-import com.agaperra.todo.ui.data.model.Levels
-import com.agaperra.todo.ui.data.model.Note
+import com.agaperra.todo.data.model.Levels
+import com.agaperra.todo.data.model.Note
 
 object  DataProvider {
 

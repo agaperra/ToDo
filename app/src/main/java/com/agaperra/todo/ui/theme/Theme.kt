@@ -6,21 +6,22 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import com.agaperra.todo.ui.theme.Color as colors
 
 private val DarkColorPalette = darkColors(
-    primary = PurpleMainDark,
-    primaryVariant = androidx.compose.ui.graphics.Color.White,
-    secondary = PurpleDark,
-    background = AppBarPurpleDark,
-    surface = PurpleMainDark
+    primary = colors.cinnamonPlum,
+    primaryVariant = colors.cinnamonWhite,
+    secondary = colors.cinnamonWine,
+    background = colors.cinnamonBrown,
+    surface = colors.cinnamonPlum
 )
 
 private val LightColorPalette = lightColors(
-    primary = PurpleMainLight,
-    primaryVariant = androidx.compose.ui.graphics.Color.Black,
-    secondary = PurpleLight ,
-    background = AppBarPurpleLight,
-    surface = PurpleMainLight
+    primary = colors.pastelDeepDirtyRed,
+    primaryVariant = colors.pastelDeepPurple,
+    secondary = colors.pastelDirtyPink ,
+    background = colors.pastelLightPurple,
+    surface = colors.pastelDeepDirtyRed
 
     /* Other default colors to override
     background = Color.White,
