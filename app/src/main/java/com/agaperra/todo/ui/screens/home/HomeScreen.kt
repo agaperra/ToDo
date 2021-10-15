@@ -1,9 +1,5 @@
-package com.agaperra.todo.ui.main
+package com.agaperra.todo.ui.screens.home
 
-import android.os.Bundle
-import android.view.Window
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,31 +14,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.agaperra.todo.R
 import com.agaperra.todo.data.DataProvider
 import com.agaperra.todo.data.model.Note
+import com.agaperra.todo.ui.main.NoteListItem
 import com.agaperra.todo.ui.theme.ToDoTheme
 import com.agaperra.todo.utils.Toolbar
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ToDoTheme {
-                DefaultPreview(window)
-            }
-        }
-    }
+@Composable
+fun HomeScreen() {
+    DefaultPreview()
 }
 
 @Composable
-fun Content(notes: List<Note>, window: Window) {
-    window.statusBarColor = MaterialTheme.colors.background.toArgb()
-    window.navigationBarColor = MaterialTheme.colors.primary.toArgb()
+fun Content(notes: List<Note>) {
     val note = remember { notes }
     if (note.isEmpty()) {
         Image(
@@ -65,10 +54,9 @@ fun Content(notes: List<Note>, window: Window) {
     }
 }
 
-
-
+@Preview
 @Composable
-fun DefaultPreview(window: Window) {
+fun DefaultPreview() {
     ToDoTheme {
         Column() {
             Surface() {
@@ -80,7 +68,7 @@ fun DefaultPreview(window: Window) {
                     .fillMaxWidth(),
                 color = MaterialTheme.colors.surface
             ) {
-                Content(DataProvider.notesList1, window)
+                Content(DataProvider.notesList1)
                 Row(
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 8.dp),
                     verticalAlignment = Alignment.Bottom,
@@ -95,8 +83,8 @@ fun DefaultPreview(window: Window) {
                         Icon(Icons.Filled.Add, "")
                     }
                 }
+
             }
         }
     }
 }
-
