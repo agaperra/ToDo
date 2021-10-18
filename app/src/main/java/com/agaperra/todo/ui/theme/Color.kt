@@ -4,16 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 object Color {
 
-    var LowTeal = Color(0xFF236864)
-    var HighTeal = Color(0xFF76AFAC)
-    var PurpleMainLight = Color(0xFFCBB4FF)
-    var PurpleLight = Color(0xFF8C7CB1)
-    var AppBarPurpleLight = Color(0xFF746692)
-    var PurpleMainDark = Color(0xFF100A1B)
-    var PurpleDark = Color(0xFF180D2E)
-    var AppBarPurpleDark = Color(0xFF241344)
-    var IconsPurpleDark = Color(0xFF5B347E)
-
     //light colors
     val pastelWhite = Color(0xFFF1F5F8)
     val pastelLightPurple = Color(0xFFB0B0CD)
@@ -29,5 +19,10 @@ object Color {
     val cinnamonWine = Color(0xFF602F42)
     val cinnamonPlum = Color(0xFF2C2839)
     val cinnamonBrown = Color(0xFF5F4746)
+
+    // level colors
+    val red = Color(0xFFFF0000)
+    val yellow = Color(0xFFFFFF00)
+    val green = Color(0xFF00FF00)
 
 }

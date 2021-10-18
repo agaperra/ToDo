@@ -2,15 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lowTeal">#FF236864</color>
-    <color name="highTeal">#FF76AFAC</color>
-    <color name="purpleMainLight">#CBB4FF</color>
-    <color name="purpleMainDark">#100A1B</color>
-    <color name="purpleLight">#8C7CB1</color>
-    <color name="appBarPurpleLight">#746692</color>
-    <color name="purpleDark">#180D2E</color>
-    <color name="appBarPurpleDark">#241344</color>
-    <color name="iconsPurpleDark">#5B347E</color>
 
     <color name="pastelWhite">#F1F5F8</color>
     <color name="pastelLightPurple">#B0B0CD</color>

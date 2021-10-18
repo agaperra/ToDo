@@ -3,4 +3,7 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="splash_screen_background">Splash Screen Background</string>
+    <string name="title">Title</string>
+    <string name="level">The urgency level</string>
+    <string name="note">Type there your note…</string>
 </resources>

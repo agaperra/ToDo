@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.agaperra.todo.R
 import com.agaperra.todo.data.DataProvider
@@ -26,8 +25,39 @@ import com.agaperra.todo.ui.theme.ToDoTheme
 import com.agaperra.todo.utils.Toolbar
 
 @Composable
-fun HomeScreen() {
-    DefaultPreview()
+fun HomeScreen(
+    navigateToAddScreen: () -> Unit
+) {
+    ToDoTheme {
+        Column() {
+            Surface() {
+                Toolbar(title = R.string.app_name)
+            }
+            Surface(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                color = MaterialTheme.colors.surface
+            ) {
+                Content(DataProvider.notesList1)
+                Row(
+                    modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 8.dp),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    val onClick = { navigateToAddScreen() }
+                    FloatingActionButton(
+                        onClick = onClick,
+                        backgroundColor = MaterialTheme.colors.background,
+                        contentColor = MaterialTheme.colors.primaryVariant,
+                    ) {
+                        Icon(Icons.Filled.Add, "")
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 @Composable
@@ -50,41 +80,6 @@ fun Content(notes: List<Note>) {
                     NoteListItem(note = it)
                 }
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    ToDoTheme {
-        Column() {
-            Surface() {
-                Toolbar(title = R.string.app_name)
-            }
-            Surface(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                color = MaterialTheme.colors.surface
-            ) {
-                Content(DataProvider.notesList1)
-                Row(
-                    modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 8.dp),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    val onClick = { /* Do something */ }
-                    FloatingActionButton(
-                        onClick = onClick,
-                        backgroundColor = MaterialTheme.colors.background,
-                        contentColor = MaterialTheme.colors.primaryVariant,
-                    ) {
-                        Icon(Icons.Filled.Add, "")
-                    }
-                }
-
-            }
         }
     }
 }
