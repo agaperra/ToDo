@@ -1,5 +1,6 @@
 package com.agaperra.todo.ui.screens.splash
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
@@ -12,21 +13,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.agaperra.todo.ui.theme.Color.cinnamonWine
+import com.agaperra.todo.R
 import com.agaperra.todo.ui.viewModel.SharedViewModel
 import com.agaperra.todo.utils.Constants.SPLASH_SCREEN_FIRST_LAUNCH_DELAY
 import com.agaperra.todo.utils.Constants.SPLASH_SCREEN_NORMAL
+import com.agaperra.todo.utils.Constants.notes
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import com.agaperra.todo.R
 
+@SuppressLint("CoroutineCreationDuringComposition")
+@DelicateCoroutinesApi
 @Composable
 fun SplashScreen(
     sharedViewModel: SharedViewModel = hiltViewModel(),
     navigateToHomeScreen: () -> Unit
 ) {
     val isFirstLaunch by sharedViewModel.isFirstLaunch.collectAsState()
+
+
+        sharedViewModel.readAllNote.observeForever { notes = it ?: listOf() }
+
 
     LaunchedEffect(key1 = isFirstLaunch) {
         delay(

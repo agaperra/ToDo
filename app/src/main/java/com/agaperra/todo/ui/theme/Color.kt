@@ -25,4 +25,7 @@ object Color {
     val yellow = Color(0xFFFFFF00)
     val green = Color(0xFF00FF00)
 
+    val cardCollapsedBackgroundColor = Color(0xFFBDE7EC)
+    val cardExpandedBackgroundColor = Color(0xFFD1A3FF)
+
 }

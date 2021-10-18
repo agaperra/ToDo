@@ -7,7 +7,9 @@ import androidx.navigation.NavGraphBuilder
 import com.agaperra.todo.ui.screens.add.AddScreen
 import com.agaperra.todo.utils.Constants
 import com.google.accompanist.navigation.animation.composable
+import kotlinx.coroutines.*
 
+@DelicateCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
