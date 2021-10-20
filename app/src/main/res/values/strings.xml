@@ -6,4 +6,7 @@
     <string name="title">Title</string>
     <string name="level">The urgency level</string>
     <string name="note">Type there your note…</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="save">Note saved</string>
 </resources>

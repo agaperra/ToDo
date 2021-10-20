@@ -1,6 +1,5 @@
 package com.agaperra.todo.ui.viewModel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agaperra.todo.data.db.NoteDatabaseHelper
@@ -22,28 +21,7 @@ class SharedViewModel @Inject constructor(
     private val repository: NoteDatabaseHelper
 ) : ViewModel() {
 
-
-    //var readAllNote: LiveData<List<RoomNote>> = repository.readAllNotes
-
     var readAllNote = repository.readAllNotes
-
-    private val _revealedCardIdsList = MutableStateFlow(listOf<Int>())
-    val revealedCardIdsList: StateFlow<List<Int>> get() = _revealedCardIdsList
-
-
-    fun onItemExpanded(cardId: Int) {
-        if (_revealedCardIdsList.value.contains(cardId)) return
-        _revealedCardIdsList.value = _revealedCardIdsList.value.toMutableList().also { list ->
-            list.add(cardId)
-        }
-    }
-
-    fun onItemCollapsed(cardId: Int) {
-        if (!_revealedCardIdsList.value.contains(cardId)) return
-        _revealedCardIdsList.value = _revealedCardIdsList.value.toMutableList().also { list ->
-            list.remove(cardId)
-        }
-    }
 
     init {
         GlobalScope.launch {
@@ -61,29 +39,30 @@ class SharedViewModel @Inject constructor(
 
     suspend fun drop(date: String) = repository.drop(date)
     suspend fun getCount(): Int = repository.getCount()
-    fun getDetails(date: String) = repository.getDataByCreateDate(date)
+    fun getDetails(id: Int) = repository.getDataById(id)
 
     suspend fun saveNoteToDB(
-        title: String?,
+        //title: String?,
         create_date: String,
         edit_date: String,
         note: String?,
         level: Levels
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insert(RoomNote(null, title, create_date, edit_date, note, level))
+            repository.insert(RoomNote(null, create_date, edit_date, note, level))
         }
     }
 
     suspend fun updateNote(
-        title: String?,
+        id : Int?,
+        //title: String?,
         create_date: String,
         edit_date: String,
         note: String?,
         level: Levels
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.update( title, create_date, edit_date, note, level)
+            repository.update( id,create_date, edit_date, note, level)
         }
     }
 

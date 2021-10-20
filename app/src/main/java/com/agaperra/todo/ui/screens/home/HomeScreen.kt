@@ -1,50 +1,55 @@
 package com.agaperra.todo.ui.screens.home
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.agaperra.todo.R
+import com.agaperra.todo.ui.card.CardContent
 import com.agaperra.todo.ui.theme.ToDoTheme
 import com.agaperra.todo.ui.viewModel.SharedViewModel
-import com.agaperra.todo.ui.card.ActionsRow
-import com.agaperra.todo.utils.Constants.ACTION_ITEM_SIZE
-import com.agaperra.todo.utils.Constants.CARD_OFFSET
 import com.agaperra.todo.utils.Constants.notes
-import com.agaperra.todo.ui.card.DraggableCardSimple
 import com.agaperra.todo.utils.Toolbar
-import com.agaperra.todo.utils.dp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @DelicateCoroutinesApi
 @Composable
 fun HomeScreen(
     sharedViewModel: SharedViewModel = hiltViewModel(),
-    navigateToAddScreen: () -> Unit,
+    navHostController: NavHostController
 ) {
+
     ToDoTheme {
         Column() {
             Surface() {
-                Toolbar(title = R.string.app_name)
+                Toolbar(listOf(R.string.app_name, R.string.settings, R.string.about))
             }
             Surface(
                 modifier = Modifier
@@ -52,13 +57,15 @@ fun HomeScreen(
                     .fillMaxWidth(),
                 color = MaterialTheme.colors.surface
             ) {
-                Content(sharedViewModel)
+                Content(sharedViewModel, navHostController)
                 Row(
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 8.dp),
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    val onClick = { navigateToAddScreen() }
+                    val onClick = {
+                        navHostController.navigate(route = "add/" + -1)
+                    }
                     FloatingActionButton(
                         onClick = onClick,
                         backgroundColor = MaterialTheme.colors.background,
@@ -73,21 +80,18 @@ fun HomeScreen(
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @DelicateCoroutinesApi
 @Composable
-fun Content(sharedViewModel: SharedViewModel) {
+fun Content(sharedViewModel: SharedViewModel, navHostController: NavHostController) {
 
     sharedViewModel.readAllNote.observeForever { notes = it }
-    var state  by remember { mutableStateOf(notes) }
+    var state by remember { mutableStateOf(notes) }
 
-    val revealedCardIds = sharedViewModel.revealedCardIdsList.collectAsState()
 
-    GlobalScope.launch {
-        val items = sharedViewModel.readAllNote.value
-        notes = items ?: listOf()
-    }
-    if (state.isEmpty()) {
+    if (notes.isEmpty()) {
         Image(
             painterResource(R.drawable.ic_box_empty),
             contentDescription = "",
@@ -96,32 +100,95 @@ fun Content(sharedViewModel: SharedViewModel) {
             modifier = Modifier.wrapContentSize()
         )
     } else {
+        var columnAppeared by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) {
+            columnAppeared = true
+        }
         LazyColumn {
-            itemsIndexed(state) { _, card ->
-                Box(Modifier.fillMaxWidth()) {
-                    ActionsRow(
-                        actionIconSize = ACTION_ITEM_SIZE.dp,
-                        onDelete = {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                sharedViewModel.drop(card.create_date)
-                            }
-                            sharedViewModel.onItemCollapsed(card.id!!)
-                            if (state.contains(card)) {
-                                state = state.toMutableList().also { list ->
-                                    list.remove(card)
-                                }
-                            }
+            itemsIndexed(
+                items = notes
+            ) { _, card ->
+
+                val dismissState = rememberDismissState()
+                val dismissDirection = dismissState.dismissDirection
+                val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+
+                if (isDismissed && dismissDirection == DismissDirection.EndToStart
+                ) {
+                    val scope = rememberCoroutineScope()
+                    scope.launch {
+                        delay(300)
+                        GlobalScope.launch(Dispatchers.IO) {
+                            sharedViewModel.drop(card.create_date)
+                        }
+                        println(state)
+                        if (state.contains(card)){
+                            state = state.toMutableList().also{list-> list.remove(card)}
+                            notes.toMutableList().remove(card)
+                        }
+                        println(state)
+                    }
+                }
 
 
-                        },
-                        onEdit = {}
+                var itemAppeared by remember { mutableStateOf(!columnAppeared) }
+                LaunchedEffect(Unit) {
+                    itemAppeared = true
+                }
+                AnimatedVisibility(
+                    visible = itemAppeared && !isDismissed,
+                    exit = shrinkVertically(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                        )
+                    ),
+                    enter = expandVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
                     )
-                    DraggableCardSimple(
-                        note = card,
-                        isRevealed = revealedCardIds.value.contains(card.id),
-                        cardOffset = CARD_OFFSET.dp(),
-                        onExpand = { sharedViewModel.onItemExpanded(card.id!!) },
-                        onCollapse = { sharedViewModel.onItemCollapsed(card.id!!) },
+                ) {
+                    SwipeToDismiss(
+                        state = dismissState,
+                        dismissThresholds = { FractionalThreshold(0.2f) },
+                        background = {
+                            val color = when (dismissState.dismissDirection) {
+                                DismissDirection.StartToEnd -> Color.Transparent
+                                DismissDirection.EndToStart -> MaterialTheme.colors.background
+                                null -> Color.Transparent
+                            }
+                            Box(
+                                modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(100.dp)
+                                    .padding(0.dp, 8.dp, 0.dp, 3.dp)
+                                    .background(color)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colors.surface,
+                                    modifier = Modifier.align(Alignment.CenterEnd)
+                                )
+                            }
+                        },
+                        dismissContent = {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(100.dp)
+                                    .padding(16.dp, 8.dp, 16.dp, 3.dp),
+                                backgroundColor = MaterialTheme.colors.secondary,
+                                shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+                                elevation = 0.dp,
+                                content = { CardContent(note = card) },
+                                onClick = {
+                                    navHostController.navigate(route = "add/" + card.id)
+                                }
+                            )
+                        },
+                        directions = setOf(DismissDirection.EndToStart)
                     )
                 }
             }

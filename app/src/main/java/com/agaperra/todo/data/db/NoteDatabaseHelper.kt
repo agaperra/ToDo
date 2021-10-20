@@ -17,18 +17,21 @@ class NoteDatabaseHelper @Inject constructor(
 
     override val readAllNotes: LiveData<List<RoomNote>> = dao.all()
 
-    override fun getDataByCreateDate(date: String): LiveData<RoomNote> = dao.getDataByCreateDate(date)
+    override fun getDataById(id: Int): RoomNote {
+        return dao.getDataById(id)
+    }
 
     override suspend fun drop(date: String) = dao.drop(date)
 
     override suspend fun update(
-        title: String?,
+        id: Int?,
+        //title: String?,
         create_date: String,
         edit_date: String,
         note: String?,
         level: Levels
     ) {
-        dao.update( title, create_date, edit_date, note, level)
+        dao.update( id, create_date, edit_date, note, level)
     }
 
     override suspend fun insert(entity: RoomNote) {
@@ -41,9 +44,9 @@ class NoteDatabaseHelper @Inject constructor(
 
 interface INoteDatabaseHelper {
     val readAllNotes: LiveData<List<RoomNote>>
-    fun getDataByCreateDate(date: String): LiveData<RoomNote>
+    fun getDataById(id: Int): RoomNote
     suspend fun drop(date: String)
-    suspend fun update(title: String?, create_date: String, edit_date: String, note: String?, level: Levels)
+    suspend fun update(id: Int?, create_date: String, edit_date: String, note: String?, level: Levels)
     suspend fun insert(entity: RoomNote)
     suspend fun getCount(): Int
 }

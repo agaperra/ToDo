@@ -1,5 +1,7 @@
 package com.agaperra.todo.ui.screens.add
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -18,20 +20,23 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.agaperra.todo.R
+import com.agaperra.todo.data.db.entity.RoomNote
 import com.agaperra.todo.data.model.Levels
 import com.agaperra.todo.ui.theme.Color
 import com.agaperra.todo.ui.viewModel.SharedViewModel
+import com.agaperra.todo.utils.Constants.NOTE_DETAILS
 import com.agaperra.todo.utils.Constants.simpleDateFormat
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -39,13 +44,24 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @DelicateCoroutinesApi
 @ExperimentalComposeUiApi
 @Composable
 fun AddScreen(
     sharedViewModel: SharedViewModel = hiltViewModel(),
-    onClick: () -> Unit = {}
+    navHostController: NavHostController
 ) {
+    var argNote: RoomNote? = RoomNote(null,  "", "", "", Levels.LOW)
+    val note = navHostController.currentBackStackEntry?.arguments?.getInt(NOTE_DETAILS)
+    if (note != -1)
+        GlobalScope.launch(Dispatchers.IO) {
+            argNote = sharedViewModel.getDetails(note!!)
+        }
+    if (note == -1 || argNote == null) argNote = RoomNote(null,  "", "", "", Levels.LOW)
+
+
+
     MaterialTheme(
         typography =
         Typography(
@@ -63,53 +79,55 @@ fun AddScreen(
                 .padding(30.dp, 0.dp, 30.dp, 0.dp)
         ) {
 
+//            val textState = remember { mutableStateOf(argNote!!.title) }
+//            val focusRequester = remember { FocusRequester() }
+//            val keyboardController = LocalSoftwareKeyboardController.current
 
-            var textState by remember { mutableStateOf("") }
-
-            val focusRequester = remember { FocusRequester() }
-            val keyboardController = LocalSoftwareKeyboardController.current
-
-            Surface(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(0.dp, 30.dp, 0.dp, 30.dp)
-                        .focusRequester(focusRequester),
-                    value = textState,
-                    onValueChange = { newText -> textState = newText },
-                    label = {
-                        Text(
-                            stringResource(id = R.string.title),
-                            color = MaterialTheme.colors.primaryVariant
-                        )
-                    },
-                    singleLine = true,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
-                        unfocusedBorderColor = MaterialTheme.colors.background,
-                        textColor = MaterialTheme.colors.primaryVariant,
-                        disabledTextColor = MaterialTheme.colors.primaryVariant,
-                        cursorColor = MaterialTheme.colors.primaryVariant
-                    ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    )
-                )
-            }
+//            Surface(
+//                modifier =
+//                Modifier
+//                    .fillMaxWidth()
+//            ) {
+//                OutlinedTextField(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(0.dp, 30.dp, 0.dp, 30.dp)
+//                        .focusRequester(focusRequester),
+//                    value =textState.value!!,
+//                    onValueChange = { newText ->
+//                        textState.value = newText
+//                    },
+//                    label = {
+//                        Text(
+//                            stringResource(id = R.string.title),
+//                            color = MaterialTheme.colors.primaryVariant
+//                        )
+//                    },
+//                    singleLine = false,
+//                    maxLines = 1,
+//                    colors = TextFieldDefaults.outlinedTextFieldColors(
+//                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
+//                        unfocusedBorderColor = MaterialTheme.colors.background,
+//                        textColor = MaterialTheme.colors.primaryVariant,
+//                        disabledTextColor = MaterialTheme.colors.primaryVariant,
+//                        cursorColor = MaterialTheme.colors.primaryVariant
+//                    ),
+//                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+//                    keyboardActions = KeyboardActions(
+//                        onDone = {
+//                            keyboardController?.hide()
+//                        }
+//                    )
+//                )
+//            }
 
 
             var expanded by remember { mutableStateOf(false) }
-            var levelText by remember { mutableStateOf(Levels.LOW) }
+            var levelText by remember { mutableStateOf(argNote!!.level) }
             var levelColor by remember { mutableStateOf(Color.green) }
 
             Card(
+                modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 8.dp),
                 shape = RoundedCornerShape(8.dp),
                 backgroundColor = MaterialTheme.colors.surface,
                 border = BorderStroke(1.dp, MaterialTheme.colors.background)
@@ -251,7 +269,7 @@ fun AddScreen(
             }
 
 
-            var textState1 by remember { mutableStateOf("") }
+            var textState1 by remember { mutableStateOf(argNote!!.note) }
 
             val focusRequester1 = remember { FocusRequester() }
             val keyboardController1 = LocalSoftwareKeyboardController.current
@@ -268,7 +286,7 @@ fun AddScreen(
                         .weight(1f)
                         .padding(0.dp, 30.dp, 0.dp, 10.dp)
                         .focusRequester(focusRequester1),
-                    value = textState1,
+                    value = textState1!!,
                     onValueChange = { newText -> textState1 = newText },
                     label = {
                         Text(
@@ -276,10 +294,13 @@ fun AddScreen(
                             color = MaterialTheme.colors.primaryVariant
                         )
                     },
+                    singleLine = false,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.primaryVariant,
                         unfocusedBorderColor = MaterialTheme.colors.background,
-                        textColor = MaterialTheme.colors.primaryVariant
+                        textColor = MaterialTheme.colors.primaryVariant,
+                        disabledTextColor = MaterialTheme.colors.primaryVariant,
+                        cursorColor = MaterialTheme.colors.primaryVariant
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
@@ -303,7 +324,11 @@ fun AddScreen(
                     horizontalAlignment = Alignment.Start
                 ) {
                     FloatingActionButton(
-                        onClick = onClick,
+                        onClick = {
+                            navHostController.navigate(route = "home"){
+                                popUpTo(0)
+                            }
+                        },
                         backgroundColor = MaterialTheme.colors.background,
                         contentColor = MaterialTheme.colors.primaryVariant,
                     ) {
@@ -311,23 +336,41 @@ fun AddScreen(
                     }
                 }
 
+                val context = LocalContext.current
+                val save = stringResource(id = R.string.save)
+
                 Column(horizontalAlignment = Alignment.End) {
 
                     FloatingActionButton(
                         onClick = {
                             GlobalScope.launch(Dispatchers.IO) {
                                 val time = simpleDateFormat.format(Date())
-                                sharedViewModel
-                                    .saveNoteToDB(
-                                        textState,
-                                        time,
-                                        time,
-                                        textState1,
-                                        levelText
-                                    )
+                                if (argNote!!.id != null) {
+                                    sharedViewModel
+                                        .updateNote(
+                                            argNote!!.id,
+                                            argNote!!.create_date,
+                                            time,
+                                            textState1,
+                                            levelText
+                                        )
+                                } else {
+                                    sharedViewModel
+                                        .saveNoteToDB(
+                                           // textState.value,
+                                            time,
+                                            time,
+                                            textState1,
+                                            levelText
+                                        )
+                                }
 
                             }
-                            onClick
+                            Toast.makeText(context, save, Toast.LENGTH_SHORT)
+                                .show()
+                            navHostController.navigate(route = "home"){
+                                popUpTo(0)
+                            }
                         },
                         backgroundColor = MaterialTheme.colors.background,
                         contentColor = MaterialTheme.colors.primaryVariant,

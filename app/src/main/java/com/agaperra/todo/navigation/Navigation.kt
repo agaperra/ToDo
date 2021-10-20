@@ -11,7 +11,9 @@ import com.agaperra.todo.navigation.destinations.homeComposable
 import com.agaperra.todo.navigation.destinations.splashComposable
 import com.agaperra.todo.utils.Constants.SPLASH_SCREEN
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import kotlinx.coroutines.DelicateCoroutinesApi
 
+@DelicateCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -21,7 +23,7 @@ fun SetupNavigation(navHostController: NavHostController) {
 
     AnimatedNavHost(navController = navHostController, startDestination = SPLASH_SCREEN, builder = {
         splashComposable(navigateToHomeScreen = screens.splash)
-        homeComposable(navigateToAddScreen = screens.add)
-        addComposable(onClick = { navHostController.popBackStack() })
+        homeComposable(navHostController)
+        addComposable(navHostController)
     })
 }

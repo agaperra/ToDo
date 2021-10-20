@@ -20,7 +20,7 @@ import com.agaperra.todo.ui.theme.Color as color
 
 @Composable
 fun Toolbar(
-    @StringRes title: Int
+    @StringRes list: List<Int>
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.background,
@@ -37,7 +37,7 @@ fun Toolbar(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = stringResource(id = title),
+                    text = stringResource(id = list[0]),
                     fontSize = 16.sp,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Normal,
@@ -54,14 +54,14 @@ fun Toolbar(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.End,
             ) {
-                DropdownMenuDemo()
+                DropdownMenuDemo(listOf(list[1], list[2]))
             }
         }
     }
 }
 
 @Composable
-fun DropdownMenuDemo() {
+fun DropdownMenuDemo(@StringRes list: List<Int>) {
 
     val expanded = remember { mutableStateOf(false) }
 
@@ -82,10 +82,10 @@ fun DropdownMenuDemo() {
             modifier = Modifier.wrapContentSize()
         ) {
             DropdownMenuItem(onClick = { }) {
-                Text (stringResource(id = R.string.settings),color = MaterialTheme.colors.primaryVariant)
+                Text (stringResource(id = list[0]),color = MaterialTheme.colors.primaryVariant)
             }
             DropdownMenuItem(onClick = { }) {
-                Text (stringResource(id = R.string.about),color = MaterialTheme.colors.primaryVariant)
+                Text (stringResource(id = list[1]),color = MaterialTheme.colors.primaryVariant)
             }
 
         }

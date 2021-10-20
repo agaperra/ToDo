@@ -35,7 +35,7 @@ fun SplashScreen(
     val isFirstLaunch by sharedViewModel.isFirstLaunch.collectAsState()
 
 
-        sharedViewModel.readAllNote.observeForever { notes = it ?: listOf() }
+    sharedViewModel.readAllNote.observeForever { notes = it ?: listOf() }
 
 
     LaunchedEffect(key1 = isFirstLaunch) {

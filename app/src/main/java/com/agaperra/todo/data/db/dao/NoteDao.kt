@@ -13,14 +13,14 @@ interface NoteDao {
     @Query("SELECT * FROM RoomNote ORDER BY edit_date desc")
     fun all(): LiveData<List<RoomNote>>
 
-    @Query("SELECT * FROM RoomNote WHERE create_date LIKE :date")
-    fun getDataByCreateDate(date: String): LiveData<RoomNote>
+    @Query("SELECT * FROM RoomNote WHERE id=:id")
+    fun getDataById(id: Int): RoomNote
 
     @Query("DELETE FROM RoomNote WHERE create_date LIKE :date")
     suspend fun drop(date: String)
 
-    @Query("UPDATE RoomNote SET  title=:title,edit_date=:edit_date,note=:note, level=:level WHERE create_date=:create_date")
-    suspend fun update( title: String?, create_date: String, edit_date: String, note: String?, level: Levels)
+    @Query("UPDATE RoomNote SET id=:id,edit_date=:edit_date,note=:note, level=:level WHERE create_date=:create_date")
+    suspend fun update(id: Int?,  create_date: String, edit_date: String, note: String?, level: Levels)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: RoomNote)

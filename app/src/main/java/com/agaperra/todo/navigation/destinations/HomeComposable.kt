@@ -3,6 +3,7 @@ package com.agaperra.todo.navigation.destinations
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import com.agaperra.todo.data.db.entity.RoomNote
 import com.agaperra.todo.ui.screens.home.HomeScreen
 import com.agaperra.todo.utils.Constants.HOME_SCREEN
@@ -13,7 +14,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.homeComposable(
-    navigateToAddScreen: () -> Unit
+    navHostController: NavHostController
 ) {
-    composable(route = HOME_SCREEN) { HomeScreen(navigateToAddScreen = navigateToAddScreen) }
+    composable(route = HOME_SCREEN) { HomeScreen( navHostController = navHostController) }
 }
