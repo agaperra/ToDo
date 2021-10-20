@@ -19,4 +19,8 @@ class Screens(navHostController: NavHostController) {
         navHostController.navigate(route = "add/{note}")
     }
 
+    val about: () -> Unit = {
+        navHostController.navigate(route = "about")
+    }
+
 }

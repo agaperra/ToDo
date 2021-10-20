@@ -9,4 +9,5 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="save">Note saved</string>
+    <string name="info">The application was developed by @agaperra</string>
 </resources>

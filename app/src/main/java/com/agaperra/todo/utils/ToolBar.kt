@@ -15,12 +15,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.agaperra.todo.R
 import com.agaperra.todo.ui.theme.Color as color
 
 @Composable
 fun Toolbar(
-    @StringRes list: List<Int>
+    @StringRes list: List<Int>,
+    navHostController: NavHostController
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.background,
@@ -54,14 +56,14 @@ fun Toolbar(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.End,
             ) {
-                DropdownMenuDemo(listOf(list[1], list[2]))
+                DropdownMenuDemo(listOf(list[1]), navHostController)
             }
         }
     }
 }
 
 @Composable
-fun DropdownMenuDemo(@StringRes list: List<Int>) {
+fun DropdownMenuDemo(@StringRes list: List<Int>, navHostController: NavHostController) {
 
     val expanded = remember { mutableStateOf(false) }
 
@@ -81,11 +83,10 @@ fun DropdownMenuDemo(@StringRes list: List<Int>) {
             onDismissRequest = { expanded.value = false },
             modifier = Modifier.wrapContentSize()
         ) {
-            DropdownMenuItem(onClick = { }) {
+            DropdownMenuItem(onClick = {
+                navHostController.navigate(route = "about")
+            }) {
                 Text (stringResource(id = list[0]),color = MaterialTheme.colors.primaryVariant)
-            }
-            DropdownMenuItem(onClick = { }) {
-                Text (stringResource(id = list[1]),color = MaterialTheme.colors.primaryVariant)
             }
 
         }

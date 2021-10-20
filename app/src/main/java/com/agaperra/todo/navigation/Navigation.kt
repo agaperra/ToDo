@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
+import com.agaperra.todo.navigation.destinations.aboutComposable
 import com.agaperra.todo.navigation.destinations.addComposable
 import com.agaperra.todo.navigation.destinations.homeComposable
 import com.agaperra.todo.navigation.destinations.splashComposable
@@ -25,5 +26,6 @@ fun SetupNavigation(navHostController: NavHostController) {
         splashComposable(navigateToHomeScreen = screens.splash)
         homeComposable(navHostController)
         addComposable(navHostController)
+        aboutComposable(navHostController)
     })
 }

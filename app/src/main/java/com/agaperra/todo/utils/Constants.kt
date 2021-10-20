@@ -13,6 +13,7 @@ object Constants {
     const val SPLASH_SCREEN = "splash"
     const val HOME_SCREEN = "home"
     const val ADD_SCREEN = "add"
+    const val ABOUT_SCREEN = "about"
     const val ROUTE_NOTE_DETAILS = "add/{note}"
     const val NOTE_DETAILS = "note"
 

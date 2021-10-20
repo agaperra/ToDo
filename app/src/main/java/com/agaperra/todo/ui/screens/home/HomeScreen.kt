@@ -49,7 +49,7 @@ fun HomeScreen(
     ToDoTheme {
         Column() {
             Surface() {
-                Toolbar(listOf(R.string.app_name, R.string.settings, R.string.about))
+                Toolbar(listOf(R.string.app_name, R.string.about), navHostController)
             }
             Surface(
                 modifier = Modifier
